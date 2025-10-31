@@ -73,7 +73,7 @@ const Contact: React.FC<ContactSectionProps> = ({
       >
         <Magnetic>
           <a
-            href="mailto:sigmasolutions.comp@gmail.com"
+            href="mailto:iankennethagustin@gmail.com"
             className="flex gap-x-2 rounded-full border-dark border-2 px-2 py-1"
           >
             <Mail />
