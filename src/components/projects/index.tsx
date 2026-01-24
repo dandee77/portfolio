@@ -81,8 +81,8 @@ const Projects: React.FC<ProjectsSectionProps> = ({
       title: "LaVisual",
       category: "Web Development / Design",
       year: "2024-25",
-      image: "./img/lavisual/thumbnail.png",
-      imageDetail: "./img/lavisual/sample.png",
+      image: "/img/lavisual/thumbnail.png",
+      imageDetail: "/img/lavisual/sample.png",
       description:
         "LaVisual is a photo and video services website with a booking system that streamlines client reservations, service availability, and payments. It lets customers explore packages, schedule sessions, and manage bookings, while giving administrators an easy way to oversee calendars and analytics.",
       color: "77, 128, 237",
@@ -97,8 +97,8 @@ const Projects: React.FC<ProjectsSectionProps> = ({
       title: "Seraface",
       category: "Mobile Development / AI",
       year: "2025-Now",
-      image: "./img/seraface/thumbnail.png",
-      imageDetail: "./img/seraface/sample.png",
+      image: "/img/seraface/thumbnail.png",
+      imageDetail: "/img/seraface/sample.png",
       description:
         "Seraface is a mobile app that provides AI-powered skincare recommendations tailored to each user’s skin type, conditions, allergies, and budget. By analyzing selfies and personal data, it suggests products, routines, and dermatologist connections,making skincare guidance accessible and affordable, especially for teens and young adults.",
       technologies: {
@@ -113,8 +113,8 @@ const Projects: React.FC<ProjectsSectionProps> = ({
       title: "Cake & Bakes",
       category: "Web Development / E-commerce",
       year: "2024-25",
-      image: "./img/cakes/thumbnail.png",
-      imageDetail: "./img/cakes/sample.png",
+      image: "/img/cakes/thumbnail.png",
+      imageDetail: "/img/cakes/sample.png",
       description: `Cakes & Bakes by Ria is an e-commerce platform for a local cake shop in Bulacan. It provides customers with a digital catalog of cakes and pastries, making it easier to browse, order, and pay online, while giving the owner a dashboard to manage orders efficiently.`,
       technologies: {
         frontend: "ReactJS, Tailwind, Framer Motion",
@@ -128,8 +128,8 @@ const Projects: React.FC<ProjectsSectionProps> = ({
       title: "BBuildLabs",
       category: "Web Development / 3D",
       year: "2024-25",
-      image: "./img/bbuild/thumbnail.png",
-      imageDetail: "./img/bbuild/sample.png",
+      image: "/img/bbuild/thumbnail.png",
+      imageDetail: "/img/bbuild/sample.png",
       description:
         "BBuildLabs is a PC builder platform where users can browse and order computer parts. It includes a 3D modeling feature that lets customers simulate their builds virtually, ensuring compatibility and providing a realistic preview before purchase.",
       technologies: {

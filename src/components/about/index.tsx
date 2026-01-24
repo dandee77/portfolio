@@ -1,8 +1,10 @@
-import { MotionValue, useAnimationControls, motion } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
+import { MotionValue, useAnimationControls, motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import Magnetic from "../Magnetic";
 import { useLenis } from "@studio-freight/react-lenis";
+import JournalOverlay from "./JournalOverlay";
+import JournalCurve from "./JournalCurve";
 
 type AboutSectionProps = {
   isAboutInView: boolean;
@@ -46,6 +48,8 @@ const About: React.FC<AboutSectionProps> = ({
   const aboutControls = useAnimationControls();
 
   const [hasAnimated, setHasAnimated] = useState(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [isContentVisible, setIsContentVisible] = useState(false);
 
   const lenis = useLenis();
 
@@ -59,11 +63,39 @@ const About: React.FC<AboutSectionProps> = ({
     }
   }, [isAboutInView, aboutControls, hasAnimated, setHasAnimated]);
 
+  const handleJournalClick = () => {
+    setIsOverlayVisible(true);
+  };
+
+  const closeOverlay = () => {
+    setIsContentVisible(false);
+    setTimeout(() => {
+      setIsOverlayVisible(false);
+    }, 800);
+  };
+
+  useEffect(() => {
+    if (isOverlayVisible) {
+      lenis?.stop();
+      document.documentElement.style.overflowY = "hidden";
+      const timer = setTimeout(() => {
+        setIsContentVisible(true);
+      }, 800);
+      return () => clearTimeout(timer);
+    } else {
+      lenis?.start();
+      document.documentElement.style.overflowY = "auto";
+    }
+  }, [isOverlayVisible, lenis]);
+
   const initialState = isMobile ? "visible" : "hidden";
 
   return (
     <motion.div
-      style={{ background: backgroundGradient }}
+      style={{ 
+        background: backgroundGradient,
+        zIndex: isOverlayVisible ? 20 : 10,
+      }}
       className="w-screen min-h-screen overflow-hidden flex justify-center items-center relative z-10"
     >
       <motion.div
@@ -110,11 +142,11 @@ const About: React.FC<AboutSectionProps> = ({
                 <motion.button
                   variants={fadeInUpVariants}
                   custom={3}
-                  onClick={() => lenis?.scrollTo("#contact")}
+                  onClick={handleJournalClick}
                   className="flex bg-dark rounded-full text-light pl-4 pr-6 gap-x-1 py-3 w-max poppins-regular mt-24 select-none"
                 >
                   <ArrowUpRight />
-                  Get in Touch
+                  Know More
                 </motion.button>
               </Magnetic>
             )}
@@ -135,17 +167,46 @@ const About: React.FC<AboutSectionProps> = ({
             <motion.button
               variants={fadeInUpVariants}
               custom={3}
-              onClick={() =>
-                document.getElementById("contact")?.scrollIntoView()
-              }
+              onClick={handleJournalClick}
               className="flex bg-dark rounded-full text-light pl-4 pr-6 gap-x-1 py-3 w-max h-fit poppins-regular select-none mt-8"
             >
               <ArrowUpRight />
-              Get in Touch
+              Know More
             </motion.button>
           )}
         </div>
       </motion.div>
+
+      <AnimatePresence>
+        {isOverlayVisible && (
+          <>
+            <JournalCurve isVisible={isOverlayVisible} />
+            <motion.div
+              className="fixed inset-0 w-full z-[999] flex items-center justify-center"
+              style={{ pointerEvents: isContentVisible ? "auto" : "none" }}
+              initial="hidden"
+              animate={isOverlayVisible ? "visible" : "exit"}
+              exit="exit"
+              onTouchStart={(e) => e.stopPropagation()}
+              onTouchMove={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence mode="wait">
+                {isContentVisible && (
+                  <JournalOverlay isMobile={isMobile} />
+                )}
+              </AnimatePresence>
+            </motion.div>
+            {isContentVisible && (
+              <button
+                onClick={closeOverlay}
+                className="fixed z-[9999] top-6 right-6 px-4 py-2 text-light text-xl poppins-regular flex flex-row gap-x-2 items-center"
+              >
+                <X size={32} />
+              </button>
+            )}
+          </>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 };
