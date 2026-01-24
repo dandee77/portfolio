@@ -188,8 +188,8 @@ const NavMenu: React.FC<NavMenuProps> = ({ isOpen, onClose }) => {
           transition={{ delay: 0.5, duration: 0.3 }}
         >
           <p className="text-sm text-gray-600">Get in touch</p>
-          <a href="mailto:iankennethagustin@gmail.com" className="text-lg hover:underline">
-            iankennethagustin@gmail.com
+          <a href="mailto:dandeegalang.ph@gmail.com" className="text-lg hover:underline">
+            dandeegalang.ph@gmail.com
           </a>
         </motion.div>
       </motion.div>
