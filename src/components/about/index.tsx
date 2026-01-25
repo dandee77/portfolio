@@ -197,7 +197,7 @@ const About: React.FC<AboutSectionProps> = ({
             >
               <AnimatePresence mode="wait">
                 {isContentVisible && (
-                  <JournalOverlay isMobile={isMobile} />
+                  <JournalOverlay isMobile={isMobile} onClose={closeOverlay} />
                 )}
               </AnimatePresence>
             </motion.div>
