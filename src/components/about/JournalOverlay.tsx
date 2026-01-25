@@ -82,8 +82,10 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     const namesContainerHeight = namesContainer.offsetHeight;
     const imagesHeight = imagesContainer.offsetHeight;
 
+    const xButtonClearance = 50;
+
     const moveDistanceIndex = spotlightHeight - spotlightPadding * 2 - projectIndexHeight;
-    const moveDistanceNames = spotlightHeight - spotlightPadding * 2 - namesContainerHeight;
+    const moveDistanceNames = spotlightHeight - spotlightPadding * 2 - namesContainerHeight - xButtonClearance;
     const moveDistanceImages = window.innerHeight - imagesHeight;
     const imgActivationThreshold = window.innerHeight / 2;
 
