@@ -50,6 +50,7 @@ const About: React.FC<AboutSectionProps> = ({
   const [hasAnimated, setHasAnimated] = useState(false);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
   const [isContentVisible, setIsContentVisible] = useState(false);
+  const [isJournalOpen, setIsJournalOpen] = useState(false);
 
   const lenis = useLenis();
 
@@ -64,6 +65,7 @@ const About: React.FC<AboutSectionProps> = ({
   }, [isAboutInView, aboutControls, hasAnimated, setHasAnimated]);
 
   const handleJournalClick = () => {
+    setIsJournalOpen(true);
     setIsOverlayVisible(true);
   };
 
@@ -72,6 +74,9 @@ const About: React.FC<AboutSectionProps> = ({
     setTimeout(() => {
       setIsOverlayVisible(false);
     }, 800);
+    setTimeout(() => {
+      setIsJournalOpen(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -178,7 +183,7 @@ const About: React.FC<AboutSectionProps> = ({
       </motion.div>
 
       <AnimatePresence>
-        {isOverlayVisible && (
+        {(isOverlayVisible || isJournalOpen) && (
           <>
             <JournalCurve isVisible={isOverlayVisible} />
             <motion.div
