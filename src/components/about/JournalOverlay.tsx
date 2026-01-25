@@ -178,7 +178,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
   const handleProjectClick = (projectIndex: number) => {
     if (!lenisRef.current) return;
 
-    const totalScrollDistance = window.innerHeight * 5;
+    const totalScrollDistance = window.innerHeight * 5; 
     const projectProgress = (projectIndex + 0.5) / projects.length;
     const targetScrollPosition = spotlightOffsetRef.current + (projectProgress * totalScrollDistance);
 
@@ -197,7 +197,6 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.4 }}
-      style={{ backgroundColor: "#000000" }}
     >
       {/* Intro Section */}
       <section className="relative w-full h-screen p-8 overflow-hidden flex justify-center items-center">
