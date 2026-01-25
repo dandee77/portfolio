@@ -80,7 +80,7 @@ const About: React.FC<AboutSectionProps> = ({
   };
 
   useEffect(() => {
-    if (isOverlayVisible) {
+    if (isJournalOpen) {
       lenis?.stop();
       document.documentElement.style.overflowY = "hidden";
       const timer = setTimeout(() => {
@@ -91,7 +91,7 @@ const About: React.FC<AboutSectionProps> = ({
       lenis?.start();
       document.documentElement.style.overflowY = "auto";
     }
-  }, [isOverlayVisible, lenis]);
+  }, [isJournalOpen, lenis]);
 
   const initialState = isMobile ? "visible" : "hidden";
 
