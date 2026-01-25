@@ -35,6 +35,8 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
   const nameRefs = useRef<(HTMLParagraphElement | null)[]>([]);
   const labelLeftRef = useRef<HTMLParagraphElement>(null);
   const labelRightRef = useRef<HTMLParagraphElement>(null);
+  const lenisRef = useRef<any>(null);
+  const spotlightOffsetRef = useRef<number>(0);
   
   const [currentNumber, setCurrentNumber] = useState("01");
   const [labelLeft, setLabelLeft] = useState(projects[0].name);
@@ -64,6 +66,12 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       infinite: false,
     });
 
+    // Store lenis instance in ref for access outside useEffect
+    lenisRef.current = lenis;
+
+    // Calculate and store spotlight section offset (intro section height)
+    spotlightOffsetRef.current = window.innerHeight;
+
     // Connect Lenis to GSAP
     lenis.on("scroll", ScrollTrigger.update);
     
@@ -82,10 +90,8 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     const namesContainerHeight = namesContainer.offsetHeight;
     const imagesHeight = imagesContainer.offsetHeight;
 
-    const xButtonClearance = 50;
-
     const moveDistanceIndex = spotlightHeight - spotlightPadding * 2 - projectIndexHeight;
-    const moveDistanceNames = spotlightHeight - spotlightPadding * 2 - namesContainerHeight - xButtonClearance;
+    const moveDistanceNames = spotlightHeight - spotlightPadding * 2 - namesContainerHeight - 50;
     const moveDistanceImages = window.innerHeight - imagesHeight;
     const imgActivationThreshold = window.innerHeight / 2;
 
@@ -168,6 +174,19 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       });
     };
   }, []);
+
+  const handleProjectClick = (projectIndex: number) => {
+    if (!lenisRef.current) return;
+
+    const totalScrollDistance = window.innerHeight * 5;
+    const projectProgress = (projectIndex + 0.5) / projects.length;
+    const targetScrollPosition = spotlightOffsetRef.current + (projectProgress * totalScrollDistance);
+
+    lenisRef.current.scrollTo(targetScrollPosition, {
+      duration: 1.5,
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    });
+  };
 
   return (
     <motion.div
@@ -254,7 +273,8 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
             <p
               key={index}
               ref={(el) => (nameRefs.current[index] = el)}
-              className="poppins-medium text-xl transition-colors duration-300 max-md:text-white"
+              onClick={() => handleProjectClick(index)}
+              className="poppins-medium text-xl transition-colors duration-300 max-md:text-white cursor-pointer hover:opacity-80"
               style={{ color: "#4a4a4a" }}
             >
               {project.name}
