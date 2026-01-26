@@ -70,7 +70,6 @@ const About: React.FC<AboutSectionProps> = ({
   };
 
   const closeOverlay = () => {
-    // Re-enable lenis first, then scroll to about section
     if (lenis) {
       lenis.start();
       document.documentElement.style.overflowY = "auto";
@@ -84,7 +83,6 @@ const About: React.FC<AboutSectionProps> = ({
         });
       }
       
-      // Stop lenis again after scroll
       setTimeout(() => {
         lenis.stop();
         document.documentElement.style.overflowY = "hidden";

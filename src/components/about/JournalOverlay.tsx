@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 // @ts-ignore - Lenis types may not be available
 import Lenis from "@studio-freight/lenis";
+import { Award, Briefcase, Heart } from "lucide-react";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,17 +13,51 @@ type JournalOverlayProps = {
   onClose: () => void;
 };
 
-const projects = [
-  { name: "Human Form Study", category: "Photography", image: "/img/lavisual/thumbnail.png" },
-  { name: "Urban Landscape", category: "Design", image: "/img/bbuild/thumbnail.png" },
-  { name: "Abstract Patterns", category: "Art", image: "/img/cakes/thumbnail.png" },
-  { name: "Nature's Embrace", category: "Digital", image: "/img/seraface/thumbnail.png" },
-  { name: "Technological Wonders", category: "Technology", image: "/img/lavisual/thumbnail.png" },
-  { name: "Architectural Marvels", category: "Architecture", image: "/img/bbuild/thumbnail.png" },
-  { name: "Cultural Tapestry", category: "Culture", image: "/img/cakes/thumbnail.png" },
-  { name: "Cosmic Exploration", category: "Space", image: "/img/seraface/thumbnail.png" },
-  { name: "Emotional Expressions", category: "Portrait", image: "/img/lavisual/thumbnail.png" },
-  { name: "Futuristic Visions", category: "Futurism", image: "/img/bbuild/thumbnail.png" },
+type Category = "achievements" | "experience" | "hobby" | null;
+
+type ProjectData = {
+  name: string;
+  category: string;
+  image: string;
+};
+
+const achievementsData: ProjectData[] = [
+  { name: "Award Winning Design", category: "Recognition", image: "/img/lavisual/thumbnail.png" },
+  { name: "Innovation Summit", category: "Conference", image: "/img/bbuild/thumbnail.png" },
+  { name: "Tech Excellence", category: "Award", image: "/img/cakes/thumbnail.png" },
+  { name: "Community Leader", category: "Leadership", image: "/img/seraface/thumbnail.png" },
+  { name: "Startup Success", category: "Business", image: "/img/lavisual/thumbnail.png" },
+  { name: "Digital Pioneer", category: "Technology", image: "/img/bbuild/thumbnail.png" },
+  { name: "Creative Impact", category: "Design", image: "/img/cakes/thumbnail.png" },
+  { name: "Global Recognition", category: "International", image: "/img/seraface/thumbnail.png" },
+  { name: "Industry Leader", category: "Professional", image: "/img/lavisual/thumbnail.png" },
+  { name: "Breakthrough Project", category: "Innovation", image: "/img/bbuild/thumbnail.png" },
+];
+
+const experienceData: ProjectData[] = [
+  { name: "Senior Developer", category: "Tech Company", image: "/img/bbuild/thumbnail.png" },
+  { name: "Lead Designer", category: "Agency", image: "/img/cakes/thumbnail.png" },
+  { name: "Product Manager", category: "Startup", image: "/img/seraface/thumbnail.png" },
+  { name: "Technical Architect", category: "Enterprise", image: "/img/lavisual/thumbnail.png" },
+  { name: "Creative Director", category: "Studio", image: "/img/bbuild/thumbnail.png" },
+  { name: "Engineering Lead", category: "SaaS", image: "/img/cakes/thumbnail.png" },
+  { name: "UX Researcher", category: "Product", image: "/img/seraface/thumbnail.png" },
+  { name: "Full Stack Dev", category: "Freelance", image: "/img/lavisual/thumbnail.png" },
+  { name: "Team Lead", category: "Corporation", image: "/img/bbuild/thumbnail.png" },
+  { name: "Innovation Manager", category: "R&D", image: "/img/cakes/thumbnail.png" },
+];
+
+const hobbyData: ProjectData[] = [
+  { name: "Photography Journey", category: "Visual Arts", image: "/img/lavisual/thumbnail.png" },
+  { name: "Music Production", category: "Audio", image: "/img/bbuild/thumbnail.png" },
+  { name: "Analog Photography", category: "Film", image: "/img/cakes/thumbnail.png" },
+  { name: "Digital Illustration", category: "Art", image: "/img/seraface/thumbnail.png" },
+  { name: "Travel Diaries", category: "Adventure", image: "/img/lavisual/thumbnail.png" },
+  { name: "Woodworking", category: "Craft", image: "/img/bbuild/thumbnail.png" },
+  { name: "Urban Exploration", category: "Photography", image: "/img/cakes/thumbnail.png" },
+  { name: "Creative Writing", category: "Literature", image: "/img/seraface/thumbnail.png" },
+  { name: "3D Modeling", category: "Digital", image: "/img/lavisual/thumbnail.png" },
+  { name: "Experimental Cook", category: "Culinary", image: "/img/bbuild/thumbnail.png" },
 ];
 
 export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProps) {
@@ -38,9 +73,45 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
   const lenisRef = useRef<any>(null);
   const spotlightOffsetRef = useRef<number>(0);
   
+  const [selectedCategory, setSelectedCategory] = useState<Category>(null);
+  const [hasSelectedOnce, setHasSelectedOnce] = useState(false);
   const [currentNumber, setCurrentNumber] = useState("01");
-  const [labelLeft, setLabelLeft] = useState(projects[0].name);
-  const [labelRight, setLabelRight] = useState(projects[0].category);
+  const [labelLeft, setLabelLeft] = useState("");
+  const [labelRight, setLabelRight] = useState("");
+
+  // Get current projects based on selected category
+  const currentProjects = selectedCategory === "achievements" 
+    ? achievementsData 
+    : selectedCategory === "experience" 
+    ? experienceData 
+    : selectedCategory === "hobby"
+    ? hobbyData
+    : achievementsData;
+
+  const handleCategorySelect = (category: Category) => {
+    setSelectedCategory(category);
+    setHasSelectedOnce(true);
+    
+    // Update initial labels based on selected category
+    const projects = category === "achievements" 
+      ? achievementsData 
+      : category === "experience" 
+      ? experienceData 
+      : hobbyData;
+    
+    setLabelLeft(projects[0].name);
+    setLabelRight(projects[0].category);
+    
+    // Scroll to gallery section after selection
+    setTimeout(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(window.innerHeight, {
+          duration: 1.5,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      }
+    }, 300);
+  };
 
   useEffect(() => {
     const container = containerRef.current;
@@ -61,13 +132,17 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       gestureOrientation: "vertical",
       smoothWheel: true,
       wheelMultiplier: 1,
-      smoothTouch: false,
       touchMultiplier: 2,
       infinite: false,
     });
 
     // Store lenis instance in ref for access outside useEffect
     lenisRef.current = lenis;
+
+    // Lock scroll on intro section if no category selected yet
+    if (!hasSelectedOnce) {
+      lenis.stop();
+    }
 
     // Calculate and store spotlight section offset (intro section height)
     spotlightOffsetRef.current = window.innerHeight;
@@ -83,6 +158,16 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
 
     // Clear any existing ScrollTriggers
     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+
+    // Only setup ScrollTrigger if category is selected
+    if (!selectedCategory) {
+      return () => {
+        lenis.destroy();
+        gsap.ticker.remove((time) => {
+          lenis.raf(time * 1000);
+        });
+      };
+    }
 
     const spotlightHeight = spotlight.offsetHeight;
     const spotlightPadding = parseFloat(getComputedStyle(spotlight).padding);
@@ -105,7 +190,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       scrub: 1,
       onUpdate: (self) => {
         const progress = self.progress;
-        const totalProjects = projects.length;
+        const totalProjects = currentProjects.length;
         const currentIndex = Math.min(
           Math.floor(progress * totalProjects) + 1,
           totalProjects
@@ -115,8 +200,8 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
         setCurrentNumber(String(currentIndex).padStart(2, "0"));
         
         // Update labels
-        setLabelLeft(projects[currentIndex - 1].name);
-        setLabelRight(projects[currentIndex - 1].category);
+        setLabelLeft(currentProjects[currentIndex - 1].name);
+        setLabelRight(currentProjects[currentIndex - 1].category);
 
         // Animate project index
         gsap.set(projectIndex, {
@@ -173,13 +258,13 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
         lenis.raf(time * 1000);
       });
     };
-  }, []);
+  }, [selectedCategory, hasSelectedOnce, currentProjects]);
 
   const handleProjectClick = (projectIndex: number) => {
     if (!lenisRef.current) return;
 
     const totalScrollDistance = window.innerHeight * 5; 
-    const projectProgress = (projectIndex + 0.5) / projects.length;
+    const projectProgress = (projectIndex + 0.5) / currentProjects.length;
     const targetScrollPosition = spotlightOffsetRef.current + (projectProgress * totalScrollDistance);
 
     lenisRef.current.scrollTo(targetScrollPosition, {
@@ -188,7 +273,28 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     });
   };
 
-  return (
+  const categoryCards = [
+    {
+      id: "achievements" as Category,
+      title: "Achievements",
+      icon: Award,
+      description: "Awards & Recognition"
+    },
+    {
+      id: "experience" as Category,
+      title: "Experience",
+      icon: Briefcase,
+      description: "Professional Journey"
+    },
+    {
+      id: "hobby" as Category,
+      title: "Hobby",
+      icon: Heart,
+      description: "Passion Projects"
+    }
+  ];
+
+  return (  
     <motion.div
       ref={containerRef}
       data-lenis-prevent
@@ -198,94 +304,146 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       exit={{ opacity: 0, y: 20 }}
       transition={{ duration: 0.4 }}
     >
-      {/* Intro Section */}
-      <section className="relative w-full h-screen p-8 overflow-hidden flex justify-center items-center">
-        <p className="poppins-medium text-2xl text-center">A collection of selected works</p>
-      </section>
-
-      {/* Spotlight Section */}
-      <section 
-        ref={spotlightRef}
-        className="relative w-full h-screen p-8 overflow-hidden"
-      >
-        {/* Project Index */}
-        <div className="absolute top-8 left-8 z-10">
-          <h1 ref={projectIndexRef} className="khula-regular uppercase leading-none">
-            <span className="text-[9rem] max-sm:text-[6rem]">{currentNumber}</span>
-            <span className="text-4xl max-sm:text-2xl opacity-50">/{projects.length.toString().padStart(2, "0")}</span>
+      {/* Intro Section - Category Selection */}
+      <section className="relative w-full h-screen p-8 overflow-hidden flex flex-col justify-center items-center">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex flex-col items-center gap-4 mb-16"
+        >
+          <h1 className="khula-regular text-7xl max-sm:text-5xl text-center">
+            What do you want
           </h1>
-        </div>
-
-        {/* Project Images */}
-        <div 
-          ref={imagesContainerRef}
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[35%] max-md:w-[calc(100%-4rem)] flex flex-col gap-2 -z-10"
-          style={{ paddingTop: "50vh", paddingBottom: "50vh" }}
-        >
-          {projects.map((project, index) => (
-            <div
-              key={index}
-              ref={(el) => (imageRefs.current[index] = el)}
-              className="w-full aspect-video opacity-50 transition-all duration-300 overflow-hidden rounded-lg"
-            >
-              <img 
-                src={project.image} 
-                alt={project.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-          ))}
-        </div>
-
-        {/* Project Labels */}
-        <div className="absolute top-1/2 left-0 right-0 pointer-events-none z-10">
-          <p
-            ref={labelLeftRef}
-            className="absolute poppins-light-italic text-xs uppercase tracking-widest text-white transition-opacity duration-300"
-            style={{
-              left: "calc(50% - 17.5% - 1rem)",
-              transform: "translateX(-100%)",
-              textAlign: "right"
-            }}
-          >
-            {labelLeft}
+          <h2 className="khula-regular text-6xl max-sm:text-3xl text-center">
+            to know about me?
+          </h2>
+          <p className="poppins-light text-base text-gray-2 mt-8"> 
+            Choose one:
           </p>
-          <p
-            ref={labelRightRef}
-            className="absolute poppins-light-italic text-xs uppercase tracking-widest text-white transition-opacity duration-300"
-            style={{
-              right: "calc(50% - 17.5% - 1rem)",
-              transform: "translateX(100%)",
-              textAlign: "left"
-            }}
-          >
-            {labelRight}
-          </p>
-        </div>
+        </motion.div>
 
-        {/* Project Names */}
-        <div 
-          ref={namesContainerRef}
-          className="absolute right-8 bottom-8 flex flex-col items-end"
+        <motion.div 
+          className="grid grid-cols-3 max-md:grid-cols-1 gap-8 max-w-5xl w-full px-4"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
         >
-          {projects.map((project, index) => (
+          {categoryCards.map((card, index) => {
+            const Icon = card.icon;
+            return (
+              <motion.button
+                key={card.id}
+                onClick={() => handleCategorySelect(card.id)}
+                className="group relative aspect-square bg-transparent border border-gray-3 hover:border-white transition-all duration-300 rounded-none flex flex-col items-center justify-center gap-6 p-8 cursor-pointer"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <div className="flex flex-col items-center gap-6 transition-transform duration-300 group-hover:scale-95">
+                  <Icon 
+                    size={64} 
+                    strokeWidth={1}
+                    className="text-white transition-colors duration-300" 
+                  />
+                  <h3 className="khula-light text-3xl max-sm:text-2xl text-white">
+                    {card.title}
+                  </h3>
+                </div>
+              </motion.button>
+            );
+          })}
+        </motion.div>
+      </section>
+
+      {/* Spotlight Section - Only show if category selected */}
+      {selectedCategory && (
+        <section 
+          ref={spotlightRef}
+          className="relative w-full h-screen p-8 overflow-hidden"
+        >
+          {/* Project Index */}
+          <div className="absolute top-8 left-8 z-10">
+            <h1 ref={projectIndexRef} className="khula-regular uppercase leading-none">
+              <span className="text-[9rem] max-sm:text-[6rem]">{currentNumber}</span>
+              <span className="text-4xl max-sm:text-2xl opacity-50">/{currentProjects.length.toString().padStart(2, "0")}</span>
+            </h1>
+          </div>
+
+          {/* Project Images */}
+          <div 
+            ref={imagesContainerRef}
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[35%] max-md:w-[calc(100%-4rem)] flex flex-col gap-2 -z-10"
+            style={{ paddingTop: "50vh", paddingBottom: "50vh" }}
+          >
+            {currentProjects.map((project, index) => (
+              <div
+                key={index}
+                ref={(el) => (imageRefs.current[index] = el)}
+                className="w-full aspect-video opacity-50 transition-all duration-300 overflow-hidden rounded-lg"
+              >
+                <img 
+                  src={project.image} 
+                  alt={project.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            ))}
+          </div>
+
+          {/* Project Labels */}
+          <div className="absolute top-1/2 left-0 right-0 pointer-events-none z-10">
             <p
-              key={index}
-              ref={(el) => (nameRefs.current[index] = el)}
-              onClick={() => handleProjectClick(index)}
-              className="poppins-medium text-xl transition-colors duration-300 max-md:text-white cursor-pointer hover:opacity-80"
-              style={{ color: "#4a4a4a" }}
+              ref={labelLeftRef}
+              className="absolute poppins-light-italic text-xs uppercase tracking-widest text-white transition-opacity duration-300"
+              style={{
+                left: "calc(50% - 17.5% - 1rem)",
+                transform: "translateX(-100%)",
+                textAlign: "right"
+              }}
             >
-              {project.name}
+              {labelLeft}
             </p>
-          ))}
-        </div>
-      </section>
+            <p
+              ref={labelRightRef}
+              className="absolute poppins-light-italic text-xs uppercase tracking-widest text-white transition-opacity duration-300"
+              style={{
+                right: "calc(50% - 17.5% - 1rem)",
+                transform: "translateX(100%)",
+                textAlign: "left"
+              }}
+            >
+              {labelRight}
+            </p>
+          </div>
 
-      {/* Outro Section */}
-      <section className="relative w-full h-screen p-8 overflow-hidden flex justify-center items-center">
-        <p className="poppins-medium text-2xl text-center">Scroll complete</p>
-      </section>
+          {/* Project Names */}
+          <div 
+            ref={namesContainerRef}
+            className="absolute right-8 bottom-8 flex flex-col items-end"
+          >
+            {currentProjects.map((project, index) => (
+              <p
+                key={index}
+                ref={(el) => (nameRefs.current[index] = el)}
+                onClick={() => handleProjectClick(index)}
+                className="khula-semibold text-xl transition-colors duration-300 max-md:text-white cursor-pointer hover:opacity-80"
+                style={{ color: "#4a4a4a" }}
+              >
+                {project.name}
+              </p>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Outro Section - Only show if category selected */}
+      {selectedCategory && (
+        <section className="relative w-full h-screen p-8 overflow-hidden flex justify-center items-center">
+          <p className="poppins-medium text-2xl text-center">Scroll complete</p>
+        </section>
+      )}
     </motion.div>
   );
 }
