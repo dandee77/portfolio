@@ -90,27 +90,39 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     : achievementsData;
 
   const handleCategorySelect = (category: Category) => {
-    setSelectedCategory(category);
-    setHasSelectedOnce(true);
+    // Start fade out
+    setIsFadingOut(true);
     
-    // Update initial labels based on selected category
-    const projects = category === "achievements" 
-      ? achievementsData 
-      : category === "experience" 
-      ? experienceData 
-      : hobbyData;
-    
-    setLabelLeft(projects[0].name);
-    setLabelRight(projects[0].category);
-    
-    // Scroll to gallery section after selection
+    // Wait for fade animation then update state
     setTimeout(() => {
-      if (lenisRef.current) {
-        lenisRef.current.scrollTo(window.innerHeight, {
-          duration: 1.5,
-          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-        });
-      }
+      setSelectedCategory(category);
+      setHasSelectedOnce(true);
+      
+      // Update initial labels based on selected category
+      const projects = category === "achievements" 
+        ? achievementsData 
+        : category === "experience" 
+        ? experienceData 
+        : hobbyData;
+      
+      setLabelLeft(projects[0].name);
+      setLabelRight(projects[0].category);
+      setCurrentNumber("01");
+      
+      // Wait a bit more for ScrollTrigger to be ready, then scroll
+      setTimeout(() => {
+        if (lenisRef.current) {
+          lenisRef.current.scrollTo(window.innerHeight, {
+            duration: 1.5,
+            easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          });
+        }
+        
+        // Reset fade state after scroll
+        setTimeout(() => {
+          setIsFadingOut(false);
+        }, 1600);
+      }, 100);
     }, 300);
   };
 
@@ -278,19 +290,22 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     // Start fade out immediately
     setIsFadingOut(true);
     
-    // Update category (this will trigger useEffect)
-    setSelectedCategory(newCategory);
-    
-    // Update labels based on new category
-    const projects = newCategory === "achievements" 
-      ? achievementsData 
-      : newCategory === "experience" 
-      ? experienceData 
-      : hobbyData;
-    
-    setLabelLeft(projects[0].name);
-    setLabelRight(projects[0].category);
-    setCurrentNumber("01");
+    // Wait for fade out to complete before changing content
+    setTimeout(() => {
+      // Update category (this will trigger useEffect)
+      setSelectedCategory(newCategory);
+      
+      // Update labels based on new category
+      const projects = newCategory === "achievements" 
+        ? achievementsData 
+        : newCategory === "experience" 
+        ? experienceData 
+        : hobbyData;
+      
+      setLabelLeft(projects[0].name);
+      setLabelRight(projects[0].category);
+      setCurrentNumber("01");
+    }, 300);
     
     // Scroll immediately (simultaneously with fade out)
     setTimeout(() => {
@@ -346,7 +361,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       <section className="relative w-full h-screen p-8 overflow-hidden flex flex-col justify-center items-center">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          animate={{ opacity: isFadingOut ? 0 : 1, y: isFadingOut ? 30 : 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
           className="flex flex-col items-center gap-4 mb-16"
         >
@@ -364,7 +379,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
         <motion.div 
           className="grid grid-cols-3 max-md:grid-cols-1 gap-8 max-w-5xl w-full px-4"
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
+          animate={{ opacity: isFadingOut ? 0 : 1 }}
           transition={{ duration: 0.8, delay: 0.5 }}
         >
           {categoryCards.map((card, index) => {
@@ -509,7 +524,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
                 >
                   <div className="flex flex-col items-center gap-6 transition-transform duration-300 group-hover:scale-95">
                     <Icon 
-                      size={56} 
+                      size={64} 
                       strokeWidth={1}
                       className="text-white transition-colors duration-300" 
                     />
