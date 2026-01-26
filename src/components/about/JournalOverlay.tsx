@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -78,6 +78,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
   const [currentNumber, setCurrentNumber] = useState("01");
   const [labelLeft, setLabelLeft] = useState("");
   const [labelRight, setLabelRight] = useState("");
+  const [isFadingOut, setIsFadingOut] = useState(false);
 
   // Get current projects based on selected category
   const currentProjects = selectedCategory === "achievements" 
@@ -273,6 +274,40 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
     });
   };
 
+  const handleCategorySwitch = (newCategory: Category) => {
+    // Start fade out immediately
+    setIsFadingOut(true);
+    
+    // Update category (this will trigger useEffect)
+    setSelectedCategory(newCategory);
+    
+    // Update labels based on new category
+    const projects = newCategory === "achievements" 
+      ? achievementsData 
+      : newCategory === "experience" 
+      ? experienceData 
+      : hobbyData;
+    
+    setLabelLeft(projects[0].name);
+    setLabelRight(projects[0].category);
+    setCurrentNumber("01");
+    
+    // Scroll immediately (simultaneously with fade out)
+    setTimeout(() => {
+      if (lenisRef.current) {
+        lenisRef.current.scrollTo(window.innerHeight, {
+          duration: 1.5,
+          easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+      }
+      
+      // Reset fade state after scroll completes
+      setTimeout(() => {
+        setIsFadingOut(false);
+      }, 1600);
+    }, 300);
+  };
+
   const categoryCards = [
     {
       id: "achievements" as Category,
@@ -293,6 +328,9 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
       description: "Passion Projects"
     }
   ];
+
+  // Get other categories (not currently selected)
+  const otherCategories = categoryCards.filter(card => card.id !== selectedCategory);
 
   return (  
     <motion.div
@@ -440,8 +478,49 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
 
       {/* Outro Section - Only show if category selected */}
       {selectedCategory && (
-        <section className="relative w-full h-screen p-8 overflow-hidden flex justify-center items-center">
-          <p className="poppins-medium text-2xl text-center">Scroll complete</p>
+        <section className="relative w-full h-screen p-8 overflow-hidden flex flex-col justify-center items-center gap-12">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            animate={{ opacity: isFadingOut ? 0 : 1 }}
+            viewport={{ once: false }}
+            transition={{ duration: 0.4 }}
+            className="flex flex-col items-center gap-4"
+          >
+            <p className="poppins-light text-base text-gray-2 text-center">
+              Explore more facets
+            </p>
+            <h3 className="khula-semibold text-6xl max-sm:text-4xl text-center">
+              Discover Other Personalities
+            </h3>
+          </motion.div>
+
+          <div className="grid grid-cols-2 max-md:grid-cols-1 gap-8 max-w-3xl w-full px-4">
+            {otherCategories.map((card, index) => {
+              const Icon = card.icon;
+              return (
+                <motion.button
+                  key={card.id}
+                  onClick={() => handleCategorySwitch(card.id)}
+                  className="group relative aspect-square bg-transparent border border-gray-3 hover:border-white transition-all duration-300 rounded-none flex flex-col items-center justify-center gap-6 p-8 cursor-pointer"
+                  animate={{ opacity: isFadingOut ? 0 : 1 }}
+                  transition={{ duration: 0.3 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex flex-col items-center gap-6 transition-transform duration-300 group-hover:scale-95">
+                    <Icon 
+                      size={56} 
+                      strokeWidth={1}
+                      className="text-white transition-colors duration-300" 
+                    />
+                    <h3 className="khula-light text-3xl max-sm:text-2xl text-white">
+                      {card.title}
+                    </h3>
+                  </div>
+                </motion.button>
+              );
+            })}
+          </div>
         </section>
       )}
     </motion.div>
