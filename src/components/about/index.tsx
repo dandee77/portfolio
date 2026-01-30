@@ -132,7 +132,7 @@ const About: React.FC<AboutSectionProps> = ({
           custom={0}
           className={`khula-semibold ${isMobile ? "text-4xl" : "text-6xl"}`}
         >
-          We are a technology-driven startup that creates innovative software and hardware solutions.
+          A technology-driven individual who creates innovative software and hardware solutions.
         </motion.h1>
 
         <motion.div
@@ -141,7 +141,7 @@ const About: React.FC<AboutSectionProps> = ({
           className={`mt-[10vh] ${isMobile && "mt-8"}`}
         >
           <p className="text-gray-3 poppins-light-italic ml-2 mb-1 select-none">
-            Hi, We are
+            This is me.
           </p>
           <motion.hr
             variants={lineVariants}
@@ -159,7 +159,7 @@ const About: React.FC<AboutSectionProps> = ({
               custom={2}
               className="khula-light text-5xl text-nowrap"
             >
-            Sigma Solutions.
+            Hi, I'm Dandee.
             </motion.h2>
             {!isMobile && (
               <Magnetic>
@@ -181,10 +181,10 @@ const About: React.FC<AboutSectionProps> = ({
             }`}
           >
             <motion.p variants={fadeInUpVariants} custom={4}>
-              We build mobile, web, and desktop apps, along with custom tools, research, and data analytics. On the hardware side, we work on IoT devices, embedded systems, smart integrations, prototypes, and support.
+              I'm a professional developer passionate on turning ideas into creative solutions. With a strong foundation in computer engineering and programming.
             </motion.p>
             <motion.p variants={fadeInUpVariants} custom={5}>
-              By combining software and hardware skills, we deliver practical tech solutions that solve real problems. Our goal is to keep innovating and creating smart solutions that truly stand out.
+              I build mobile, web, and desktop apps that utilizes AI, machine learning, and more. On the hardware side, I work on IoT devices, embedded systems, smart integrations, prototypes, and support.
             </motion.p>
           </div>
           {isMobile && (

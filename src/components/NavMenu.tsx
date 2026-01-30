@@ -114,14 +114,14 @@ const NavMenu: React.FC<NavMenuProps> = ({ isOpen, onClose }) => {
               <ul className="space-y-2">
                 {[
                   {
-                    name: "Facebook",
-                    link: "https://www.facebook.com/share/1CM5AGTdWB/",
+                    name: "Github",
+                    link: "https://github.com/dandee77",
                   },
+                  { name: "LinkedIn", link: "https://www.linkedin.com/in/dandee77/" },
                   {
                     name: "Instagram",
-                    link: "#",
+                    link: "https://www.instagram.com/stpddan/",
                   },
-                  { name: "Fiverr", link: "#" },
                 ].map((item, index) => (
                   <motion.li
                     key={item.name}
@@ -150,7 +150,7 @@ const NavMenu: React.FC<NavMenuProps> = ({ isOpen, onClose }) => {
               <h3 className="text-lg khula-light">Menu</h3>
               <ul className="space-y-2">
                 {[
-                  { name: "About Us", id: "about" },
+                  { name: "About Me", id: "about" },
                   { name: "Projects", id: "projects" },
                   /* { name: "Experience", id: "about" }, */
                   { name: "Contact", id: "contact" },

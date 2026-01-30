@@ -198,7 +198,7 @@ function App() {
                 opacity: useTransform(scrollYProgress, [0, 0.3], [1, 0]),
               }}
             >
-              Sigma Solutions
+              Dandee Galang
             </motion.p>
           </motion.div>
         </motion.div>
