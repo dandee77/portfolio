@@ -60,7 +60,7 @@ const hobbyData: ProjectData[] = [
   { name: "Experimental Cook", category: "Culinary", image: "/img/bbuild/thumbnail.png" },
 ];
 
-export default function JournalOverlay({ onClose }: JournalOverlayProps) {
+export default function JournalOverlay({ onClose: _onClose }: JournalOverlayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
   const projectIndexRef = useRef<HTMLHeadingElement>(null);
