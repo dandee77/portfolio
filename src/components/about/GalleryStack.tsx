@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
+import { motion } from "framer-motion";
 import { useRef, useEffect, useState } from "react";
 
 type GalleryStackProps = {
@@ -38,7 +38,6 @@ export default function GalleryStack({ activeSection, scrollContainer }: Gallery
 
       // Get container scroll position
       const scrollTop = container.scrollTop;
-      const containerHeight = container.scrollHeight - container.clientHeight;
       
       // Get element position relative to container
       const elementTop = element.offsetTop;

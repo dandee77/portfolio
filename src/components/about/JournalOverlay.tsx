@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -60,7 +60,7 @@ const hobbyData: ProjectData[] = [
   { name: "Experimental Cook", category: "Culinary", image: "/img/bbuild/thumbnail.png" },
 ];
 
-export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProps) {
+export default function JournalOverlay({ onClose }: JournalOverlayProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const spotlightRef = useRef<HTMLDivElement>(null);
   const projectIndexRef = useRef<HTMLHeadingElement>(null);
@@ -511,7 +511,7 @@ export default function JournalOverlay({ isMobile, onClose }: JournalOverlayProp
           </motion.div>
 
           <div className="grid grid-cols-2 max-md:grid-cols-1 gap-8 max-w-3xl w-full px-4">
-            {otherCategories.map((card, index) => {
+            {otherCategories.map((card) => {
               const Icon = card.icon;
               return (
                 <motion.button
