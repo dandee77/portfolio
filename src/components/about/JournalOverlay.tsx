@@ -16,48 +16,39 @@ type JournalOverlayProps = {
 type Category = "achievements" | "experience" | "hobby" | null;
 
 type ProjectData = {
+  region: string;
+  placement: string;
   name: string;
-  category: string;
   image: string;
 };
 
 const achievementsData: ProjectData[] = [
-  { name: "Award Winning Design", category: "Recognition", image: "/img/lavisual/thumbnail.png" },
-  { name: "Innovation Summit", category: "Conference", image: "/img/bbuild/thumbnail.png" },
-  { name: "Tech Excellence", category: "Award", image: "/img/cakes/thumbnail.png" },
-  { name: "Community Leader", category: "Leadership", image: "/img/seraface/thumbnail.png" },
-  { name: "Startup Success", category: "Business", image: "/img/lavisual/thumbnail.png" },
-  { name: "Digital Pioneer", category: "Technology", image: "/img/bbuild/thumbnail.png" },
-  { name: "Creative Impact", category: "Design", image: "/img/cakes/thumbnail.png" },
-  { name: "Global Recognition", category: "International", image: "/img/seraface/thumbnail.png" },
-  { name: "Industry Leader", category: "Professional", image: "/img/lavisual/thumbnail.png" },
-  { name: "Breakthrough Project", category: "Innovation", image: "/img/bbuild/thumbnail.png" },
+  { region: "Asia Pacific & Oceana", placement: "Semi Finalist", name: "GameJamPlus+", image: "/img/achievements/1.png" },
+  { region: "Philippines", placement: "Champion", name: "NextGenPH", image: "/img/achievements/2.jpg" },
+  { region: "Philippines", placement: "Champion", name: "C++ Nationals", image: "/img/achievements/3.jpg" },
+  { region: "Southeast Asia", placement: "2nd Place", name: "10th Huawei ICT", image: "/img/achievements/4.jpg" },
+  { region: "International", placement: "Finalist", name: "World Student Pitch", image: "/img/achievements/5.jpg" },
+  { region: "Philippines", placement: "Champion", name: "C++ Regionals", image: "/img/achievements/6.png" },
+  { region: "Southeast Asia", placement: "2nd Place", name: "9th Huawei ICT", image: "/img/achievements/7.jpg" },
+  { region: "Philippines", placement: "Gold Gears", name: "BULSU GGA", image: "/img/achievements/8.jpg" },
 ];
 
 const experienceData: ProjectData[] = [
-  { name: "Senior Developer", category: "Tech Company", image: "/img/bbuild/thumbnail.png" },
-  { name: "Lead Designer", category: "Agency", image: "/img/cakes/thumbnail.png" },
-  { name: "Product Manager", category: "Startup", image: "/img/seraface/thumbnail.png" },
-  { name: "Technical Architect", category: "Enterprise", image: "/img/lavisual/thumbnail.png" },
-  { name: "Creative Director", category: "Studio", image: "/img/bbuild/thumbnail.png" },
-  { name: "Engineering Lead", category: "SaaS", image: "/img/cakes/thumbnail.png" },
-  { name: "UX Researcher", category: "Product", image: "/img/seraface/thumbnail.png" },
-  { name: "Full Stack Dev", category: "Freelance", image: "/img/lavisual/thumbnail.png" },
-  { name: "Team Lead", category: "Corporation", image: "/img/bbuild/thumbnail.png" },
-  { name: "Innovation Manager", category: "R&D", image: "/img/cakes/thumbnail.png" },
+  { region: "JanAces Admission", placement: "Hong Kong", name: "Wordpress Developer", image: "/img/experience/1.png" },
+  { region: "HoCH Solutions", placement: "Singapore", name: "AI Developer", image: "/img/experience/2.png" },
 ];
 
 const hobbyData: ProjectData[] = [
-  { name: "Photography Journey", category: "Visual Arts", image: "/img/lavisual/thumbnail.png" },
-  { name: "Music Production", category: "Audio", image: "/img/bbuild/thumbnail.png" },
-  { name: "Analog Photography", category: "Film", image: "/img/cakes/thumbnail.png" },
-  { name: "Digital Illustration", category: "Art", image: "/img/seraface/thumbnail.png" },
-  { name: "Travel Diaries", category: "Adventure", image: "/img/lavisual/thumbnail.png" },
-  { name: "Woodworking", category: "Craft", image: "/img/bbuild/thumbnail.png" },
-  { name: "Urban Exploration", category: "Photography", image: "/img/cakes/thumbnail.png" },
-  { name: "Creative Writing", category: "Literature", image: "/img/seraface/thumbnail.png" },
-  { name: "3D Modeling", category: "Digital", image: "/img/lavisual/thumbnail.png" },
-  { name: "Experimental Cook", category: "Culinary", image: "/img/bbuild/thumbnail.png" },
+  { region: "Photography Journey", placement: "Visual Arts", name: "Hobby One", image: "/img/lavisual/thumbnail.png" },
+  { region: "Music Production", placement: "Audio", name: "Hobby Two", image: "/img/bbuild/thumbnail.png" },
+  { region: "Analog Photography", placement: "Film", name: "Hobby Three", image: "/img/cakes/thumbnail.png" },
+  { region: "Digital Illustration", placement: "Art", name: "Hobby Four", image: "/img/seraface/thumbnail.png" },
+  { region: "Travel Diaries", placement: "Adventure", name: "Hobby Five", image: "/img/lavisual/thumbnail.png" },
+  { region: "Woodworking", placement: "Craft", name: "Hobby Six", image: "/img/bbuild/thumbnail.png" },
+  { region: "Urban Exploration", placement: "Photography", name: "Hobby Seven", image: "/img/cakes/thumbnail.png" },
+  { region: "Creative Writing", placement: "Literature", name: "Hobby Eight", image: "/img/seraface/thumbnail.png" },
+  { region: "3D Modeling", placement: "Digital", name: "Hobby Nine", image: "/img/lavisual/thumbnail.png" },
+  { region: "Experimental Cook", placement: "Culinary", name: "Hobby Ten", image: "/img/bbuild/thumbnail.png" },
 ];
 
 export default function JournalOverlay({ onClose: _onClose }: JournalOverlayProps) {
@@ -105,8 +96,8 @@ export default function JournalOverlay({ onClose: _onClose }: JournalOverlayProp
         ? experienceData 
         : hobbyData;
       
-      setLabelLeft(projects[0].name);
-      setLabelRight(projects[0].category);
+      setLabelLeft(projects[0].region);
+      setLabelRight(projects[0].placement);
       setCurrentNumber("01");
       
       // Wait a bit more for ScrollTrigger to be ready, then scroll
@@ -213,8 +204,8 @@ export default function JournalOverlay({ onClose: _onClose }: JournalOverlayProp
         setCurrentNumber(String(currentIndex).padStart(2, "0"));
         
         // Update labels
-        setLabelLeft(currentProjects[currentIndex - 1].name);
-        setLabelRight(currentProjects[currentIndex - 1].category);
+        setLabelLeft(currentProjects[currentIndex - 1].region);
+        setLabelRight(currentProjects[currentIndex - 1].placement);
 
         // Animate project index
         gsap.set(projectIndex, {
@@ -302,8 +293,8 @@ export default function JournalOverlay({ onClose: _onClose }: JournalOverlayProp
         ? experienceData 
         : hobbyData;
       
-      setLabelLeft(projects[0].name);
-      setLabelRight(projects[0].category);
+      setLabelLeft(projects[0].region);
+      setLabelRight(projects[0].placement);
       setCurrentNumber("01");
     }, 300);
     
