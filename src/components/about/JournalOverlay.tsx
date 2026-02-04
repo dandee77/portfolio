@@ -39,9 +39,9 @@ const experienceData: ProjectData[] = [
 ];
 
 const hobbyData: ProjectData[] = [
-  { region: "Photography Journey", placement: "Visual Arts", name: "Hobby One", image: "/img/lavisual/thumbnail.png" },
-  { region: "Music Production", placement: "Audio", name: "Hobby Two", image: "/img/bbuild/thumbnail.png" },
-  { region: "Analog Photography", placement: "Film", name: "Hobby Three", image: "/img/cakes/thumbnail.png" },
+  { region: "Game Development", placement: "C++", name: "Space Ablaze", image: "/img/hobbies/1.mp4" },
+  { region: "Web Development", placement: "Javascript, HTML, CSS", name: "MemorialDB", image: "/img/hobbies/2.png" },
+  { region: "AI Development", placement: "Python, Gemini", name: "AI Paint Calculator", image: "/img/hobbies/3.png" },
   { region: "Digital Illustration", placement: "Art", name: "Hobby Four", image: "/img/seraface/thumbnail.png" },
   { region: "Travel Diaries", placement: "Adventure", name: "Hobby Five", image: "/img/lavisual/thumbnail.png" },
   { region: "Woodworking", placement: "Craft", name: "Hobby Six", image: "/img/bbuild/thumbnail.png" },
